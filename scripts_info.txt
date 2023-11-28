@@ -1,0 +1,111 @@
+db.usuario.insertOne ({ "nombre":"Fernando Perez", "avatar":"perro", "username":"fperez", "contraseña":"contra", "fechaReg":"27-05-2022", "correo":"f.perez@gmail.com" })
+db.usuario.insertOne ({ "nombre":"Juan Gonzalez", "avatar":"pez", "username":"jgon", "contraseña":"contra123", "fechaReg":"15-01-2023", "correo":"j.gon@gmail.com" })
+db.usuario.insertOne ({ "nombre":"Pedro Gomez", "avatar":"roca", "username":"pgomez", "contraseña":"1234", "fechaReg":"18-02-2020", "correo":"p.gomez@gmail.com" })
+db.usuario.insertOne ({ "nombre":"Cesar Ortiz", "avatar":"sombrero", "username":"cortiz", "contraseña":"contra_123", "fechaReg":"22-10-2021", "correo":"c.ortiz@gmail.com" })
+
+db.coleccion.insertOne({ "username":"fperez", "videojuego": [{"_id":0, "nombrej":"call of duty", "plataforma":"pc", "comentario":"Bien frenetico"},
+	{"_id":1, "nombrej":"deltarune", "plataforma":"pc", "comentario":"Se parece a undertale"},
+	{"_id":2, "nombrej":"deep rock galactic", "plataforma":"xbox", "comentario":"rock and stone"},
+	{"_id":3, "nombrej":"fallout 4", "plataforma":"ps4", "comentario":"Genial el sistema vats"},
+	{"_id":4, "nombrej":"baldur's gate 3", "plataforma":"pc", "comentario":"juega bastante completo"}] })
+db.coleccion.insertOne({ "username":"jgon", "videojuego": [{"_id":0, "nombrej":"call of duty", "plataforma":"pc", "comentario":"Bien frenetico"},
+	{"_id":2, "nombrej":"deep rock galactic", "plataforma":"xbox", "comentario":"rock and stone"},
+	{"_id":3, "nombrej":"fallout 4", "plataforma":"ps4", "comentario":"Genial el sistema vats"},
+	{"_id":4, "nombrej":"baldur's gate 3", "plataforma":"pc", "comentario":"juega bastante completo"},
+	{"_id":5, "nombrej":"god of war", "plataforma":"ps4", "comentario":"dioses griegos"}] })
+db.coleccion.insertOne({ "username":"pgomez", "videojuego": [{"_id":0, "nombrej":"call of duty", "plataforma":"pc", "comentario":"Bien frenetico"},
+	{"_id":2, "nombrej":"deep rock galactic", "plataforma":"xbox", "comentario":"rock and stone"},
+	{"_id":3, "nombrej":"fallout 4", "plataforma":"ps4", "comentario":"Genial el sistema vats"},
+	{"_id":5, "nombrej":"god of war", "plataforma":"ps4", "comentario":"dioses griegos"},
+	{"_id":6, "nombrej":"armored core 6", "plataforma":"xbox", "comentario":"juega bastante completo"}] })
+db.coleccion.insertOne({ "username":"cortiz", "videojuego": [{"_id":0, "nombrej":"call of duty", "plataforma":"pc", "comentario":"Bien frenetico"},
+	{"_id":2, "nombrej":"deep rock galactic", "plataforma":"xbox", "comentario":"rock and stone"},
+	{"_id":5, "nombrej":"god of war", "plataforma":"ps4", "comentario":"dioses griegos"},
+	{"_id":6, "nombrej":"armored core 6", "plataforma":"xbox", "comentario":"juega bastante completo"},
+	{"_id":7, "nombrej":"elden ring", "plataforma":"pc", "comentario":"Un mundo lleno de aventuras"}] })
+
+db.log.insertOne ({ "username":"fperez", "fechaEv":"27-05-2022", "evento":"registro cuenta" })
+db.log.insertOne ({ "username":"jgon", "fechaEv":"15-01-2023", "evento":"registro cuenta" })
+db.log.insertOne ({ "username":"pgomez", "fechaEv":"18-02-2020", "evento":"registro cuenta" })
+db.log.insertOne ({ "username":"cortiz", "fechaEv":"22-10-2021", "evento":"registro cuenta" })
+db.log.insertOne ({ "username":"fperez", "fechaEv":"12-08-2022", "evento":"creacion coleccion" })
+db.log.insertOne ({ "username":"jgon", "fechaEv":"12-12-2023", "evento":"creacion coleccion" })
+db.log.insertOne ({ "username":"pgomez", "fechaEv":"13-12-2023", "evento":"creacion coleccion" })
+db.log.insertOne ({ "username":"cortiz", "fechaEv":"29-11-2023", "evento":"creacion coleccion" })
+db.log.insertOne ({ "username":"jgon", "fechaEv":"13-12-2023", "evento":"añadio coleccion" })
+db.log.insertOne ({ "username":"fperez", "fechaEv":"13-08-2023", "evento":"añadio coleccion" })
+db.log.insertOne ({ "username":"pgomez", "fechaEv":"13-08-2023", "evento":"comento videojuego" })
+db.log.insertOne ({ "username":"cortiz", "fechaEv":"15-09-2023", "evento":"comento videojuego" })
+
+db.usuario.find({"correo": "f.perez@gmail.com"})
+db.usuario.find({"correo": "j.gon@gmail.com"})
+db.usuario.find({"correo": "p.gomez@gmail.com"})
+db.usuario.find({"correo": "c.ortiz@gmail.com"})
+
+db.coleccion.find({"username": "fperez"})
+db.coleccion.find({"username": "jgon"})
+db.coleccion.find({"username": "pgomez"})
+db.coleccion.find({"username": "cortiz"})
+
+db.coleccion.aggregate([
+    { $match: { "username": "fperez" } },
+    {
+        $project: {
+            "username": 1,
+            "videojuego": {
+                $filter: {
+                    input: "$videojuego",
+                    as: "juego",
+                    cond: { $regexMatch: { input: "$$juego.nombrej", regex: "call of duty", options: 'i' } }
+                }
+            }
+        }
+    }
+])
+
+db.coleccion.aggregate([
+    { $match: { "username": "fperez" } },
+    {
+        $project: {
+            "username": 1,
+            "videojuego": {
+                $filter: {
+                    input: "$videojuego",
+                    as: "juego",
+                    cond: { $eq: ["$$juego.plataforma", "pc"] }
+                }
+            }
+        }
+    }
+])
+
+db.log.find({"username": "fperez"})
+db.log.find({"username": "jgon"})
+db.log.find({"username": "fperez"})
+
+db.log.find({ "fechaEv": { $gte: "12-08-2022", $lte: "13-08-2023"}})
+db.log.find({ "fechaEv": { $gte: "18-02-2022", $lte: "13-08-2023"}})
+
+db.log.find({ "username": "fperez", "evento": /creacion coleccion/i})
+db.log.find({ "username": "fperez", "evento": /creacion coleccion/i})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

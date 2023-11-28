@@ -1,0 +1,12 @@
+use consultajuegosdb
+db.createCollection("usuario")
+db.usuario.insertOne({ "nombre":"Ejemplo", "avatar":"gato", "username":"username123", 
+	"contraseña":"123456", "fechaReg":"30-11-2023", "correo":"gato123@gmail.com" })
+db.createCollection("videojuego")
+db.videojuego.insertOne({ "_id":0, "nombrej":"videojuego1", 
+	"plataforma":"xbox", "comentario":"Bien padre" })
+db.createCollection("coleccion")
+db.coleccion.insertOne({ "username":"username123", "videojuego": [0,1,2,3] })
+db.createCollection("log")
+db.log.insertOne({ "username":"username123", "fechaEv":"30-11-2023", 
+	"evento":"registro cuenta" })
